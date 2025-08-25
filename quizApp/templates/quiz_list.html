@@ -1,0 +1,18 @@
+
+
+{% extends "base.html" %}
+
+{% block title %} Quiz List {% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Quiz List</h1>
+    <div class="quiz-container">
+        {% for quiz in quizzes %}
+            <div class="quiz-card">
+                <h2>{{ quiz.title }}</h2>
+                <p>{{ quiz.description }}</p>
+                <a href="{% url 'quizApp:take_quiz' quiz.id %}" class="quiz-btn">Take Quiz</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

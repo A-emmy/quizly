@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %} Quizzly- Dashboard {% endblock %}
+
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Welcome Header -->
+    <div class="mb-8">
+        <div class="bg-gradient-to-r from-purple-500 to-blue-600 rounded-3xl p-8 text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-12 -translate-x-12"></div>
+            <div class="relative z-10">
+                <h1 class="text-3xl md:text-4xl font-bold mb-2">Welcome back, {{ user.first_name|default:user.username }}! 👋</h1>
+                <p class="text-purple-100 text-lg">Ready to challenge yourself today?</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Score -->
+        <div class="bg-white/80 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-medium">Total Score</p>
+                    <p class="text-3xl font-bold text-green-600 animate-pulse">{{ user.total_score|default:0 }}</p>
+                </div>
+                <div class="p-3 bg-green-100 rounded-xl">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quizzes Completed -->
+        <div class="bg-white/80 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-medium">Quizzes Completed</p>
+                    <p class="text-3xl font-bold text-blue-600">{{ user.completed_quizzes|default:0 }}</p>
+                </div>
+                <div class="p-3 bg-blue-100 rounded-xl">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Average Score -->
+        <div class="bg-white/80 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-medium">Average Score</p>
+                    <p class="text-3xl font-bold text-purple-600">{{ user.average_score|default:0 }}%</p>
+                </div>
+                <div class="p-3 bg-purple-100 rounded-xl">
+                    <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Streak -->
+        <div class="bg-white/80 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-medium">Current Streak</p>
+                    <p class="text-3xl font-bold text-orange-600">{{ user.current_streak|default:0 }}</p>
+                </div>
+                <div class="p-3 bg-orange-100 rounded-xl">
+                    <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Recent Quizzes -->
+        <div class="lg:col-span-2">
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 overflow-hidden">
+                <div class="p-6 border-b border-gray-200/50">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                        <svg class="w-6 h-6 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253z"></path>
+                        </svg>
+                        Recent Quizzes
+                    </h2>
+                </div>
+                <div class="p-6">
+                    {% for quiz in recent_quizzes %}
+                    <div class="flex items-center justify-between p-4 hover:bg-purple-50/50 rounded-xl transition-all duration-300 group">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+                                <span class="text-white font-bold text-lg">{{ quiz.category.name.0|upper }}</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800 group-hover:text-purple-600 transition-colors">{{ quiz.title }}</h3>
+                                <p class="text-sm text-gray-500">{{ quiz.category.name }} • {{ quiz.questions_count }} questions</p>
+                                <p class="text-xs text-gray-400">{{ quiz.created_at|date:"M d, Y" }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            {% if quiz.user_score %}
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-green-600">{{ quiz.user_score }}%</p>
+                                <p class="text-xs text-gray-500">Completed</p>
+                            </div>
+                            {% endif %}
+                            <button class="bg-gradient-to-r from-purple-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-purple-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg text-sm">
+                                {% if quiz.user_score %}Retake{% else %}Start{% endif %}
+                            </button>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-800 mb-2">No quizzes yet</h3>
+                        <p class="text-gray-500 mb-4">Start your learning journey by taking your first quiz!</p>
+                        <a href="#" class="bg-gradient-to-r from-purple-500 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-purple-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                            Browse Quizzes
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            <!-- Leaderboard Position -->
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 overflow-hidden">
+                <div class="p-6 border-b border-gray-200/50">
+                    <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                        <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"></path>
+                        </svg>
+                        Your Rank
+                    </h2>
+                </div>
+                <div class="p-6 text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <span class="text-white font-bold text-2xl">#{{ user.rank|default:"--" }}</span>
+                    </div>
+                    <p class="text-gray-600 text-sm">Out of {{ total_users|default:0 }} users</p>
+                    <a href="#" class="mt-4 inline-block text-purple-600 hover:text-purple-700 font-medium text-sm hover:underline">
+                        View Full Leaderboard →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 overflow-hidden">
+                <div class="p-6 border-b border-gray-200/50">
+                    <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                        <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Quick Actions
+                    </h2>
+                </div>
+                <div class="p-6 space-y-3">
+                    <a href="#" class="flex items-center p-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Random Quiz
+                    </a>
+                    <a href="#" class="flex items-center p-3 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-xl hover:from-blue-600 hover:to-cyan-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                        Browse Categories
+                    </a>
+                    <a href="#" class="flex items-center p-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-xl hover:from-purple-600 hover:to-pink-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Create Quiz
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Achievements -->
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 overflow-hidden">
+                <div class="p-6 border-b border-gray-200/50">
+                    <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                        <svg class="w-5 h-5 text-gold-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                        </svg>
+                        Achievements
+                    </h2>
+                </div>
+                <div class="p-6">
+                    {% for achievement in recent_achievements %}
+                    <div class="flex items-center space-x-3 p-3 bg-yellow-50 rounded-xl mb-3 border border-yellow-200">
+                        <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-yellow-800 text-sm">{{ achievement.name }}</p>
+                            <p class="text-xs text-yellow-600">{{ achievement.earned_at|date:"M d" }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-6">
+                        <p class="text-gray-500 text-sm">No achievements yet</p>
+                        <p class="text-gray-400 text-xs mt-1">Complete quizzes to earn badges!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .animate-pulse-slow {
+        animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    .animate-bounce-soft {
+        animation: bounce 2s ease-in-out infinite;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

@@ -1,0 +1,83 @@
+
+
+
+
+{% extends "base.html" %}
+
+{% block title %}Quiz Results{% endblock %}
+
+{% block content %}
+<div class="result-container">
+    <div class="result-card">
+        <h1 class="quiz-title">{{ quiz.title }} - Results</h1>
+        
+        <div class="score-circle">
+            <span class="score">{{ score }}</span>
+            <p class="points">Points</p>
+        </div>
+
+        <p class="time">⏱️ Time Taken: {{ time_taken|default:"--" }} seconds</p>
+
+        <div class="actions">
+            <a href="{% url 'quizApp:quiz_list' %}" class="btn-back">⬅ Back to Quiz List</a>
+            <a href="{% url 'quizApp:take_quiz' quiz.id %}" class="btn-retry">🔄 Retry Quiz</a>
+        </div>
+    </div>
+</div>
+
+<!-- Fireworks Animation -->
+<canvas id="fireworks"></canvas>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Fireworks animation
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Firework {
+        constructor(x, y, color) {
+            this.x = x;
+            this.y = y;
+            this.radius = 2;
+            this.color = color;
+            this.dx = (Math.random() - 0.5) * 6;
+            this.dy = (Math.random() - 0.5) * 6;
+            this.life = 100;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+        update() {
+            this.x += this.dx;
+            this.y += this.dy;
+            this.life--;
+            this.draw();
+        }
+    }
+
+    let fireworks = [];
+    function animate() {
+        requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        fireworks.forEach((f, i) => {
+            f.update();
+            if (f.life <= 0) fireworks.splice(i, 1);
+        });
+    }
+    function launchFireworks() {
+        const colors = ["#ff004f", "#00ffea", "#ffd500", "#00ff0a", "#ff9100"];
+        for (let i = 0; i < 50; i++) {
+            fireworks.push(new Firework(canvas.width/2, canvas.height/2, colors[Math.floor(Math.random()*colors.length)]));
+        }
+    }
+    animate();
+    launchFireworks();
+    setInterval(launchFireworks, 2000);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+
+{% extends "base.html" %}
+
+{% block title %}Take Quiz{% endblock %}
+
+{% block content %}
+    <h1 class="quiz-title">{{ quiz.title }}</h1>
+    <button id="toggleViewBtn" class="toggle-btn">Switch to List View</button>
+
+    <form method="post">
+        {% csrf_token %}
+        <div id="quizContainer" class="card-view">
+            {% for question in quiz.questions.all %}
+                <div class="question-card">
+                    <p class="question-text">{{ question.text }}</p>
+                    {% for answer in question.answers.all %}
+                        <label class="choice-label">
+                            <input type="radio" name="/{
+                                
+                                { question.id }}" value="{{ answer.id }}">
+                            {{ answer.text }}
+                        </label><br>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+
+    <!-- js for toggle view -->
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleBtn = document.getElementById("toggleViewBtn");
+            const container = document.getElementById("quizContainer");
+
+            toggleBtn.addEventListener("click", () => {
+                if (container.classList.contains("card-view")) {
+                    container.classList.remove("card-view");
+                    container.classList.add("list-view");
+                    toggleBtn.textContent = "Switch to Card View";
+                } else {
+                    container.classList.remove("list-view");
+                    container.classList.add("card-view");
+                    toggleBtn.textContent = "Switch to List View";
+                }
+            });
+        });
+    </script>
+{% endblock %}

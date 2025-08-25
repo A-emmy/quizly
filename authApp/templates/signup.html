@@ -1,0 +1,14 @@
+<!-- django renders views from templates thats why we created this html file in templates -->
+
+{% extends "base.html" %}
+
+{% block title %} Quizzly- Register {% endblock %}
+
+{% block content %}
+    <form method="post" class="form">
+        <h2 class="title">Register Account</h2>
+        {% csrf_token %}
+         {{ form.as_p }}  <!-- this is how we access files from our django-->
+         <button type="submit">Register</button>
+    </form>
+{% endblock %}
