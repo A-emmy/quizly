@@ -33,7 +33,7 @@ class LoginView(View):
         return render(request, 'login.html', {'form': form})
 
     def post(self, request):
-        form = Login(request.POST)
+        form = Login(request, data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
             return redirect("/dashboard")

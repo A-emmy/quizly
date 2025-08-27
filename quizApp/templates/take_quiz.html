@@ -15,9 +15,7 @@
                     <p class="question-text">{{ question.text }}</p>
                     {% for answer in question.answers.all %}
                         <label class="choice-label">
-                            <input type="radio" name="/{
-                                
-                                { question.id }}" value="{{ answer.id }}">
+                            <input type="radio" name="{{ question.id }}" value="{{ answer.id }}">
                             {{ answer.text }}
                         </label><br>
                     {% endfor %}
